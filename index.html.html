@@ -38,7 +38,10 @@
 </script>
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HS Performance">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1f2937">
 <link rel="icon" href="icons/icon-192.png">
@@ -132,7 +135,9 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen"><div id="ios-install-tip" style="display:none; background:#fcd34d; ...">
+  📲 Para instalar este app no iPhone: toque no botão “Compartilhar” e selecione “Adicionar à Tela de Início”.
+</div>
     <!-- Login Screen -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4" style="background: linear-gradient(135deg, #2e3934 0%, #63594b 100%);">
         <div class="bg-white rounded-3xl p-12 w-full max-w-lg nike-shadow">
@@ -763,7 +768,15 @@
         </main>
     </div>
 
-    <script>
+    <script><script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const isIos = /iphone|ipad/i.test(navigator.userAgent);
+    const isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
+    if (isIos && !isInStandaloneMode) {
+      document.getElementById('ios-install-tip').style.display = 'block';
+    }
+  });
+</script>
         // Show main app
         function showApp() {
             const nomeCompleto = document.getElementById('nomeCompleto').value.trim();
