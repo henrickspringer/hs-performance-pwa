@@ -1,0 +1,1036 @@
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+<script>
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "SUA_API_KEY",
+    authDomain: "seu-app.firebaseapp.com",
+    projectId: "seu-app",
+    storageBucket: "seu-app.appspot.com",
+    messagingSenderId: "1234567890",
+    appId: "1:1234567890:web:abcdefgh"
+  };
+
+  // Inicializa o Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Captura o formulário e envia os dados
+  document.getElementById("form-feedback").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nome = e.target.nome.value;
+    const feedback = e.target.feedback.value;
+
+    try {
+      await db.collection("feedbacks").add({
+        nome,
+        feedback,
+        data: new Date().toISOString()
+      });
+      alert("Feedback enviado com sucesso!");
+      e.target.reset();
+    } catch (error) {
+      alert("Erro ao enviar feedback: " + error);
+    }
+  });
+</script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HS Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        // Configure Firebase (você precisa substituir pelos seus dados)
+        const firebaseConfig = {
+            // Substitua pelas suas configurações do Firebase
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_PROJECT_ID.firebaseapp.com",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_PROJECT_ID.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        window.firebaseDB = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #1f2937 50%, #374151 100%);
+        }
+        
+        .nike-shadow {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        
+        .scale-range {
+            background: linear-gradient(to right, #ef4444, #f59e0b, #10b981);
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .tab-active {
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            color: white;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+        }
+        
+        .tab-inactive {
+            background: #f8fafc;
+            color: #64748b;
+        }
+        
+        .input-focus:focus {
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nike-button {
+            background: linear-gradient(135deg, #f97316, #dc2626);
+            transition: all 0.3s ease;
+        }
+        
+        .nike-button:hover {
+            background: linear-gradient(135deg, #ea580c, #b91c1c);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+        
+        .performance-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .brand-text {
+            background: linear-gradient(135deg, #000000 0%, #374151 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4" style="background: linear-gradient(135deg, #2e3934 0%, #63594b 100%);">
+        <div class="bg-white rounded-3xl p-12 w-full max-w-lg nike-shadow">
+            <div class="text-center mb-12">
+                <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg" style="background: linear-gradient(135deg, #2e3934 0%, #63594b 100%);">
+                    <span class="text-3xl font-black text-white">HS</span>
+                </div>
+                <h1 class="text-4xl font-black text-gray-900 mb-3">Performance</h1>
+                <p class="text-xl text-gray-600 font-semibold">Consultoria Esportiva</p>
+            </div>
+            
+            <form class="space-y-8">
+                <div>
+                    <label class="block text-sm font-bold text-gray-800 mb-4 uppercase tracking-wide">Nome Completo</label>
+                    <input type="text" id="nomeCompleto" class="w-full px-6 py-5 border-2 border-gray-200 rounded-2xl input-focus transition-all text-lg font-medium" placeholder="Digite seu nome completo">
+                </div>
+                
+                <button type="button" onclick="showApp()" class="w-full text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" style="background: linear-gradient(135deg, #2e3934 0%, #63594b 100%);">
+                    ACESSAR
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="hidden min-h-screen bg-gray-100">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-black text-white">HS</span>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black text-gray-900">Performance</h1>
+                            <p class="text-xs text-gray-500 font-medium" id="userName">Maria Silva</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500 font-medium">Hoje</p>
+                            <p class="text-sm font-bold text-gray-900" id="currentDate">15 Nov</p>
+                        </div>
+                        <button class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex space-x-1 overflow-x-auto py-1">
+                    <button onclick="showTab('feedback')" class="tab-button px-4 py-3 text-xs font-bold rounded-lg whitespace-nowrap tab-active transition-all" data-tab="feedback">
+                        📊 FEEDBACK
+                    </button>
+                    <button onclick="showTab('treino')" class="tab-button px-4 py-3 text-xs font-bold rounded-lg whitespace-nowrap tab-inactive transition-all" data-tab="treino">
+                        🏐 TREINO
+                    </button>
+                    <button onclick="showTab('constancia')" class="tab-button px-4 py-3 text-xs font-bold rounded-lg whitespace-nowrap tab-inactive transition-all" data-tab="constancia">
+                        📈 CONSTÂNCIA
+                    </button>
+                    <button onclick="showTab('questionario')" class="tab-button px-4 py-3 text-xs font-bold rounded-lg whitespace-nowrap tab-inactive transition-all" data-tab="questionario">
+                        📋 RESTQ-36
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="max-w-7xl mx-auto px-6 py-6">
+            <!-- Feedback Diário Tab -->
+            <div id="feedbackTab" class="tab-content">
+                <div class="performance-card p-8 nike-shadow">
+                    <h2 class="text-2xl font-black text-gray-900 mb-8">FEEDBACK DIÁRIO</h2>
+                    
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <!-- Hidratação -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-gray-900 text-lg flex items-center">
+                                <span class="mr-3 text-2xl">💧</span> HIDRATAÇÃO
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Ingestão de água (litros)</label>
+                                <input type="number" step="0.1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="2.5">
+                            </div>
+                        </div>
+
+                        <!-- Sono -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-gray-900 text-lg flex items-center">
+                                <span class="mr-3 text-2xl">😴</span> QUALIDADE DO SONO
+                            </h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Hora de deitar</label>
+                                    <input type="time" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Hora de dormir</label>
+                                    <input type="time" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Acordou descansado?</label>
+                                <div class="flex space-x-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="descansado" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Sim</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="descansado" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Não</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Suplementos -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-gray-900 text-lg flex items-center">
+                                <span class="mr-3 text-2xl">💊</span> SUPLEMENTAÇÃO
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Consumiu os suplementos hoje?</label>
+                                <div class="flex space-x-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="suplementos" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Sim</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="suplementos" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Não</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dieta Semanal -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-gray-900 text-lg flex items-center">
+                                <span class="mr-3 text-2xl">🍽️</span> CONTROLE DIETÉTICO
+                            </h3>
+                            <div class="bg-gray-50 p-6 rounded-xl">
+                                <div class="grid grid-cols-7 gap-3 text-center mb-4">
+                                    <div class="text-xs font-bold text-gray-700">SEG</div>
+                                    <div class="text-xs font-bold text-gray-700">TER</div>
+                                    <div class="text-xs font-bold text-gray-700">QUA</div>
+                                    <div class="text-xs font-bold text-gray-700">QUI</div>
+                                    <div class="text-xs font-bold text-gray-700">SEX</div>
+                                    <div class="text-xs font-bold text-gray-700">SÁB</div>
+                                    <div class="text-xs font-bold text-gray-700">DOM</div>
+                                    
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                    <input type="number" min="0" class="w-full px-3 py-2 text-center border-2 border-gray-200 rounded-lg input-focus font-bold" placeholder="0">
+                                </div>
+                                <div class="text-xs text-gray-600 font-medium text-center">Quantas vezes saiu da dieta por dia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">O que comeu fora da dieta?</label>
+                        <textarea class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl input-focus text-lg" rows="4" placeholder="Descreva os alimentos consumidos fora da dieta..."></textarea>
+                    </div>
+
+                    <button onclick="salvarFeedback()" class="mt-8 nike-button text-white px-8 py-4 rounded-xl font-bold text-lg nike-shadow">
+                        SALVAR FEEDBACK
+                    </button>
+                </div>
+            </div>
+
+            <!-- Treino do Dia Tab -->
+            <div id="treinoTab" class="tab-content hidden">
+                <div class="performance-card p-8 nike-shadow">
+                    <h2 class="text-2xl font-black text-gray-900 mb-8">TREINO DO DIA</h2>
+                    
+                    <div class="space-y-8">
+                        <!-- Academia -->
+                        <div class="border-2 border-gray-100 rounded-2xl p-6 bg-gray-50">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">🏋️</span> ACADEMIA
+                            </h3>
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Realizou treino?</label>
+                                    <div class="flex space-x-6">
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="academia" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Sim</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="academia" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Não</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Duração (min)</label>
+                                    <input type="number" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="90">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Intensidade (1-10)</label>
+                                    <input type="number" min="1" max="10" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="7">
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Observações</label>
+                                <textarea class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" rows="3" placeholder="Como se sentiu durante o treino..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Treino com Bola -->
+                        <div class="border-2 border-gray-100 rounded-2xl p-6 bg-gray-50">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">🏐</span> TREINO COM BOLA
+                            </h3>
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Realizou treino?</label>
+                                    <div class="flex space-x-6">
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="bola" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Sim</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="bola" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Não</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Duração (min)</label>
+                                    <input type="number" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="120">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Intensidade (1-10)</label>
+                                    <input type="number" min="1" max="10" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="8">
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Fundamentos trabalhados</label>
+                                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Saque</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Recepção</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Levantamento</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Ataque</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Bloqueio</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="checkbox" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Defesa</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Treino da Noite -->
+                        <div class="border-2 border-gray-100 rounded-2xl p-6 bg-gray-50">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">🌙</span> TREINO DA NOITE
+                            </h3>
+                            <div class="grid lg:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Realizou treino?</label>
+                                    <div class="flex space-x-6">
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="noite" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Sim</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="noite" class="mr-3 w-5 h-5">
+                                            <span class="font-medium">Não</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Duração (min)</label>
+                                    <input type="number" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="60">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Tipo de treino</label>
+                                    <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg">
+                                        <option>Técnico</option>
+                                        <option>Tático</option>
+                                        <option>Físico</option>
+                                        <option>Recuperativo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="salvarTreinos()" class="mt-8 nike-button text-white px-8 py-4 rounded-xl font-bold text-lg nike-shadow">
+                        SALVAR TREINOS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Constância Tab -->
+            <div id="constanciaTab" class="tab-content hidden">
+                <div class="performance-card p-8 nike-shadow">
+                    <h2 class="text-2xl font-black text-gray-900 mb-8">CONSTÂNCIA</h2>
+                    
+                    <div class="space-y-8">
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">🎯</span> DIFICULDADES COM A DIETA
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Está enfrentando alguma dificuldade diária em relação à dieta?</label>
+                                <div class="flex space-x-6 mb-6">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="dificuldade" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Sim</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="dificuldade" class="mr-3 w-5 h-5">
+                                        <span class="font-medium">Não</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Se sim, descreva as principais dificuldades:</label>
+                                <textarea class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl input-focus text-lg" rows="4" placeholder="Ex: Falta de tempo para preparar refeições, vontade de comer doces à noite, dificuldade em manter a dieta nos finais de semana..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">📊</span> NÍVEL DE ADERÊNCIA À DIETA
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-4">De 0 a 10, como você avalia sua aderência à dieta esta semana?</label>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-sm font-bold text-gray-600">0</span>
+                                    <input type="range" min="0" max="10" class="flex-1 h-3" id="aderenciaRange">
+                                    <span class="text-sm font-bold text-gray-600">10</span>
+                                    <span class="text-lg font-black text-gray-900 min-w-[2rem]" id="aderenciaValue">5</span>
+                                </div>
+                                <div class="scale-range mt-3"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">💡</span> ESTRATÉGIAS DE MELHORIA
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-3">Que estratégias você pretende adotar para melhorar a constância?</label>
+                                <textarea class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl input-focus text-lg" rows="4" placeholder="Ex: Preparar refeições no domingo, definir horários fixos para comer, buscar alternativas saudáveis para lanches..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-6 rounded-2xl">
+                            <h3 class="font-bold text-gray-900 text-xl mb-6 flex items-center">
+                                <span class="mr-3 text-2xl">🎯</span> MINHAS METAS DESSA SEMANA
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Meta 1:</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="Ex: Beber 3 litros de água por dia">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Meta 2:</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="Ex: Não comer doces durante a semana">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-3">Meta 3:</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg" placeholder="Ex: Fazer todas as refeições nos horários corretos">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="salvarConstancia()" class="mt-8 nike-button text-white px-8 py-4 rounded-xl font-bold text-lg nike-shadow">
+                        SALVAR CONSTÂNCIA
+                    </button>
+                </div>
+            </div>
+
+            <!-- Questionário RESTQ-Sport 36 Tab -->
+            <div id="questionarioTab" class="tab-content hidden">
+                <div class="performance-card p-8 nike-shadow">
+                    <h2 class="text-2xl font-black text-gray-900 mb-6">QUESTIONÁRIO RESTQ-SPORT 36</h2>
+                    <div class="bg-black text-white p-6 rounded-2xl mb-8">
+                        <p class="font-bold mb-3">📋 INSTRUÇÕES:</p>
+                        <p class="mb-3">Marque de 0 a 6 quanto cada situação ocorreu com você nos últimos 7 dias</p>
+                        <div class="text-sm font-medium">
+                            <span class="font-bold">ESCALA:</span> 0 = Nunca | 1 = Raramente | 2 = Às vezes | 3 = Frequentemente | 4 = Muitas vezes | 5 = Quase sempre | 6 = Sempre
+                        </div>
+                    </div>
+
+                    <div class="space-y-10">
+                        <!-- Escala de Estresse -->
+                        <div>
+                            <h3 class="text-2xl font-black text-red-600 mb-8 flex items-center">
+                                <span class="mr-3">📈</span> ESCALA DE ESTRESSE
+                            </h3>
+                            <div class="space-y-6">
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">1. Estresse Geral</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Ex: ainda não conseguir encaixar a rotina">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse1">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse1">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">2. Estresse Emocional</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse2">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse2">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">3. Estresse Social</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse3">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse3">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">4. Conflito Social</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse4">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse4">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">5. Conflitos/Pressões</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse5">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse5">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">6. Fadiga</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse6">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse6">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">7. Falta de Energia</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse7">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse7">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">8. Queixas Físicas</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Ex: tive dor muscular frequente (má recuperação)">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse8">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse8">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-red-100 rounded-2xl p-6 bg-red-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">9. Pausas Perturbadas</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="estresse9">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="estresse9">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Escala de Recuperação -->
+                        <div>
+                            <h3 class="text-2xl font-black text-green-600 mb-8 flex items-center">
+                                <span class="mr-3">📉</span> ESCALA DE RECUPERAÇÃO
+                            </h3>
+                            <div class="space-y-6">
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">1. Sucesso Pessoal</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Ex: me programar para dormir às 22h">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao1">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao1">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">2. Recuperação Social</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao2">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao2">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">3. Recuperação Física</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao3">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao3">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">4. Bem-estar Geral</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao4">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao4">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">5. Qualidade do Sono</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao5">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao5">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">6. Estar em Boa Forma</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao6">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao6">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">7. Realização Pessoal</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Ex: me manter mais focado(a)">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao7">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao7">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">8. Autoeficácia</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao8">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao8">0</span>
+                                    </div>
+                                </div>
+
+                                <div class="border-2 border-green-100 rounded-2xl p-6 bg-green-50">
+                                    <label class="block text-sm font-bold text-gray-800 mb-3">9. Recuperação Esportiva</label>
+                                    <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl input-focus text-lg mb-4" placeholder="Descreva sua situação...">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-600">0</span>
+                                        <input type="range" min="0" max="6" class="flex-1 h-3" data-target="recuperacao9">
+                                        <span class="text-xs font-bold text-gray-600">6</span>
+                                        <span class="text-lg font-black text-gray-900 min-w-[1.5rem]" id="recuperacao9">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="salvarQuestionario()" class="mt-8 nike-button text-white px-8 py-4 rounded-xl font-bold text-lg nike-shadow">
+                        SALVAR QUESTIONÁRIO
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Show main app
+        function showApp() {
+            const nomeCompleto = document.getElementById('nomeCompleto').value.trim();
+            if (!nomeCompleto) {
+                alert('Por favor, digite seu nome completo antes de continuar.');
+                return;
+            }
+            
+            document.getElementById('userName').textContent = nomeCompleto;
+            
+            // Set current date
+            const today = new Date();
+            const day = today.getDate().toString().padStart(2, '0');
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const month = months[today.getMonth()];
+            document.getElementById('currentDate').textContent = `${day} ${month}`;
+            
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+        }
+
+        // Firebase save functions
+        async function salvarFeedback() {
+            try {
+                const userName = document.getElementById('userName').textContent;
+                
+                // Coleta dados do feedback
+                const hidratacao = document.querySelector('#feedbackTab input[type="number"]').value;
+                const horaDeitar = document.querySelectorAll('#feedbackTab input[type="time"]')[0].value;
+                const horaDormir = document.querySelectorAll('#feedbackTab input[type="time"]')[1].value;
+                const descansado = document.querySelector('input[name="descansado"]:checked')?.value || '';
+                const suplementos = document.querySelector('input[name="suplementos"]:checked')?.value || '';
+                
+                // Coleta dados da dieta semanal
+                const dietaSemanal = [];
+                const dietaInputs = document.querySelectorAll('#feedbackTab .grid.grid-cols-7 input[type="number"]');
+                dietaInputs.forEach((input, index) => {
+                    const dias = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'];
+                    dietaSemanal.push({
+                        dia: dias[index],
+                        vezesForaDieta: input.value || 0
+                    });
+                });
+                
+                const foradieta = document.querySelector('#feedbackTab textarea').value;
+                
+                const feedbackData = {
+                    usuario: userName,
+                    tipo: 'feedback',
+                    data: window.serverTimestamp(),
+                    hidratacao: hidratacao,
+                    sono: {
+                        horaDeitar: horaDeitar,
+                        horaDormir: horaDormir,
+                        descansado: descansado
+                    },
+                    suplementos: suplementos,
+                    dietaSemanal: dietaSemanal,
+                    alimentosForaDieta: foradieta
+                };
+                
+                await window.addDoc(window.collection(window.firebaseDB, 'feedbacks'), feedbackData);
+                alert('Feedback salvo com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao salvar feedback:', error);
+                alert('Erro ao salvar feedback. Verifique sua conexão e configuração do Firebase.');
+            }
+        }
+
+        async function salvarTreinos() {
+            try {
+                const userName = document.getElementById('userName').textContent;
+                
+                // Coleta dados da academia
+                const academiaRealizado = document.querySelector('input[name="academia"]:checked')?.value || '';
+                const academiaDuracao = document.querySelectorAll('#treinoTab input[type="number"]')[0].value;
+                const academiaIntensidade = document.querySelectorAll('#treinoTab input[type="number"]')[1].value;
+                const academiaObservacoes = document.querySelectorAll('#treinoTab textarea')[0].value;
+                
+                // Coleta dados do treino com bola
+                const bolaRealizado = document.querySelector('input[name="bola"]:checked')?.value || '';
+                const bolaDuracao = document.querySelectorAll('#treinoTab input[type="number"]')[2].value;
+                const bolaIntensidade = document.querySelectorAll('#treinoTab input[type="number"]')[3].value;
+                
+                const fundamentos = [];
+                const fundamentosInputs = document.querySelectorAll('#treinoTab input[type="checkbox"]:checked');
+                fundamentosInputs.forEach(input => {
+                    fundamentos.push(input.nextElementSibling.textContent);
+                });
+                
+                // Coleta dados do treino da noite
+                const noiteRealizado = document.querySelector('input[name="noite"]:checked')?.value || '';
+                const noiteDuracao = document.querySelectorAll('#treinoTab input[type="number"]')[4].value;
+                const noiteTipo = document.querySelector('#treinoTab select').value;
+                
+                const treinosData = {
+                    usuario: userName,
+                    tipo: 'treinos',
+                    data: window.serverTimestamp(),
+                    academia: {
+                        realizado: academiaRealizado,
+                        duracao: academiaDuracao,
+                        intensidade: academiaIntensidade,
+                        observacoes: academiaObservacoes
+                    },
+                    treinoBola: {
+                        realizado: bolaRealizado,
+                        duracao: bolaDuracao,
+                        intensidade: bolaIntensidade,
+                        fundamentos: fundamentos
+                    },
+                    treinoNoite: {
+                        realizado: noiteRealizado,
+                        duracao: noiteDuracao,
+                        tipo: noiteTipo
+                    }
+                };
+                
+                await window.addDoc(window.collection(window.firebaseDB, 'treinos'), treinosData);
+                alert('Treinos salvos com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao salvar treinos:', error);
+                alert('Erro ao salvar treinos. Verifique sua conexão e configuração do Firebase.');
+            }
+        }
+
+        async function salvarConstancia() {
+            try {
+                const userName = document.getElementById('userName').textContent;
+                
+                const dificuldade = document.querySelector('input[name="dificuldade"]:checked')?.value || '';
+                const descricaoDificuldades = document.querySelectorAll('#constanciaTab textarea')[0].value;
+                const aderencia = document.getElementById('aderenciaRange').value;
+                const estrategias = document.querySelectorAll('#constanciaTab textarea')[1].value;
+                
+                const metas = [];
+                const metasInputs = document.querySelectorAll('#constanciaTab input[type="text"]');
+                metasInputs.forEach((input, index) => {
+                    if (input.value.trim()) {
+                        metas.push({
+                            numero: index + 1,
+                            meta: input.value.trim()
+                        });
+                    }
+                });
+                
+                const constanciaData = {
+                    usuario: userName,
+                    tipo: 'constancia',
+                    data: window.serverTimestamp(),
+                    dificuldadeDieta: dificuldade,
+                    descricaoDificuldades: descricaoDificuldades,
+                    nivelAderencia: parseInt(aderencia),
+                    estrategiasMelhoria: estrategias,
+                    metas: metas
+                };
+                
+                await window.addDoc(window.collection(window.firebaseDB, 'constancia'), constanciaData);
+                alert('Constância salva com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao salvar constância:', error);
+                alert('Erro ao salvar constância. Verifique sua conexão e configuração do Firebase.');
+            }
+        }
+
+        async function salvarQuestionario() {
+            try {
+                const userName = document.getElementById('userName').textContent;
+                
+                // Coleta dados de estresse
+                const estresse = [];
+                for (let i = 1; i <= 9; i++) {
+                    const descricao = document.querySelectorAll('#questionarioTab input[type="text"]')[i-1].value;
+                    const valor = document.getElementById(`estresse${i}`).textContent;
+                    estresse.push({
+                        item: i,
+                        descricao: descricao,
+                        valor: parseInt(valor)
+                    });
+                }
+                
+                // Coleta dados de recuperação
+                const recuperacao = [];
+                for (let i = 1; i <= 9; i++) {
+                    const descricao = document.querySelectorAll('#questionarioTab input[type="text"]')[i+8].value;
+                    const valor = document.getElementById(`recuperacao${i}`).textContent;
+                    recuperacao.push({
+                        item: i,
+                        descricao: descricao,
+                        valor: parseInt(valor)
+                    });
+                }
+                
+                const questionarioData = {
+                    usuario: userName,
+                    tipo: 'restq36',
+                    data: window.serverTimestamp(),
+                    escalasEstresse: estresse,
+                    escalasRecuperacao: recuperacao
+                };
+                
+                await window.addDoc(window.collection(window.firebaseDB, 'questionarios'), questionarioData);
+                alert('Questionário RESTQ-36 salvo com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao salvar questionário:', error);
+                alert('Erro ao salvar questionário. Verifique sua conexão e configuração do Firebase.');
+            }
+        }
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.add('hidden'));
+            
+            // Show selected tab content
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            
+            // Update tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                if (button.dataset.tab === tabName) {
+                    button.className = button.className.replace('tab-inactive', 'tab-active');
+                } else {
+                    button.className = button.className.replace('tab-active', 'tab-inactive');
+                }
+            });
+        }
+
+        // Range slider functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aderência range
+            const aderenciaRange = document.getElementById('aderenciaRange');
+            const aderenciaValue = document.getElementById('aderenciaValue');
+            
+            if (aderenciaRange && aderenciaValue) {
+                aderenciaRange.addEventListener('input', function() {
+                    aderenciaValue.textContent = this.value;
+                });
+            }
+
+            // RESTQ ranges
+            const ranges = document.querySelectorAll('input[type="range"][data-target]');
+            ranges.forEach(range => {
+                const targetId = range.dataset.target;
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    range.addEventListener('input', function() {
+                        targetElement.textContent = this.value;
+                    });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9678eb53f1dce2b8',t:'MTc1MzkyMTExNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
